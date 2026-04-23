@@ -106,7 +106,6 @@ resource "aws_lambda_function" "bot" {
       USE_PLAYWRIGHT  = "true"
       USE_SES         = "true"
       USE_S3          = "true"
-      AWS_REGION_APP  = var.aws_region   # avoid collision with Lambda-managed AWS_REGION
       S3_BUCKET       = aws_s3_bucket.state.bucket
       S3_KEY          = "job-alert-bot/seen_jobs.json"
       SENDER_EMAIL    = var.sender_email
