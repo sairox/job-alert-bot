@@ -109,12 +109,13 @@ resource "aws_lambda_function" "bot" {
 
   environment {
     variables = {
-      USE_PLAYWRIGHT  = "true"
-      USE_SES         = "true"
-      USE_S3          = "true"
-      S3_BUCKET       = aws_s3_bucket.state.bucket
-      S3_KEY          = "job-alert-bot/seen_jobs.json"
-      SENDER_EMAIL    = var.sender_email
+      USE_PLAYWRIGHT            = "true"
+      USE_SES                   = "true"
+      USE_S3                    = "true"
+      S3_BUCKET                 = aws_s3_bucket.state.bucket
+      S3_KEY                    = "job-alert-bot/seen_jobs.json"
+      SENDER_EMAIL              = var.sender_email
+      PLAYWRIGHT_BROWSERS_PATH  = "/ms-playwright"
       # RECIPIENT_EMAIL is hardcoded in config.py; override here if needed
       REQUEST_TIMEOUT = "120"
     }
