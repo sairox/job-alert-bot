@@ -1,41 +1,20 @@
 # AWS Lambda container image with Playwright + Chromium
-# Build:  docker build -t job-alert-bot .
-# Push:   docker tag job-alert-bot <account>.dkr.ecr.<region>.amazonaws.com/job-alert-bot:latest
+# Force x86_64 so it matches the Lambda architecture setting in Terraform.
+# This also avoids the dnf/microdnf mismatch on Apple Silicon Macs.
+#
+# Build:  docker build --platform linux/amd64 -t job-alert-bot .
+# Push:   docker tag job-alert-bot:latest <account>.dkr.ecr.<region>.amazonaws.com/job-alert-bot:latest
 #         docker push <account>.dkr.ecr.<region>.amazonaws.com/job-alert-bot:latest
 
-FROM public.ecr.aws/lambda/python:3.11
-
-# System dependencies required by Chromium
-RUN dnf install -y \
-    atk \
-    cups-libs \
-    gtk3 \
-    libXcomposite \
-    libXcursor \
-    libXdamage \
-    libXext \
-    libXi \
-    libXrandr \
-    libXScrnSaver \
-    libXtst \
-    pango \
-    xorg-x11-fonts-100dpi \
-    xorg-x11-fonts-75dpi \
-    xorg-x11-fonts-cyrillic \
-    xorg-x11-fonts-misc \
-    xorg-x11-fonts-Type1 \
-    xorg-x11-utils \
-    alsa-lib \
-    nss \
-    mesa-libgbm \
-    && dnf clean all
+FROM --platform=linux/amd64 public.ecr.aws/lambda/python:3.11
 
 # Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Download Playwright's bundled Chromium
-RUN playwright install chromium
+# Install Chromium + all required system dependencies in one step.
+# --with-deps lets Playwright handle OS package detection automatically.
+RUN playwright install --with-deps chromium
 
 COPY src/ ${LAMBDA_TASK_ROOT}/src/
 
