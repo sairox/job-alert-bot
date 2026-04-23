@@ -81,9 +81,9 @@ resource "aws_iam_role_policy" "bot" {
         Resource = aws_s3_bucket.state.arn
       },
       {
-        Sid    = "S3State"
-        Effect = "Allow"
-        Action = ["s3:GetObject", "s3:PutObject"]
+        Sid      = "S3State"
+        Effect   = "Allow"
+        Action   = ["s3:GetObject", "s3:PutObject"]
         Resource = "${aws_s3_bucket.state.arn}/job-alert-bot/*"
       },
       {
@@ -109,15 +109,15 @@ resource "aws_lambda_function" "bot" {
 
   environment {
     variables = {
-      USE_PLAYWRIGHT            = "true"
-      USE_SES                   = "true"
-      USE_S3                    = "true"
-      S3_BUCKET                 = aws_s3_bucket.state.bucket
-      S3_KEY                    = "job-alert-bot/seen_jobs.json"
-      SENDER_EMAIL              = var.sender_email
-      PLAYWRIGHT_BROWSERS_PATH  = "/ms-playwright"
+      USE_PLAYWRIGHT  = "true"
+      USE_SES         = "true"
+      USE_S3          = "true"
+      S3_BUCKET       = aws_s3_bucket.state.bucket
+      S3_KEY          = "job-alert-bot/seen_jobs.json"
+      SENDER_EMAIL    = var.sender_email
       # RECIPIENT_EMAIL is hardcoded in config.py; override here if needed
       REQUEST_TIMEOUT = "120"
+      PLAYWRIGHT_BROWSERS_PATH  = "/ms-playwright"
     }
   }
 
