@@ -12,6 +12,9 @@ FROM --platform=linux/amd64 python:3.12-slim
 
 # Lambda task root — mirrors the Lambda execution environment
 ENV LAMBDA_TASK_ROOT=/var/task
+# Fix Playwright browser path: Lambda runs as an unpredictable user so we pin
+# the browsers to a fixed directory that any user can read.
+ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
 WORKDIR ${LAMBDA_TASK_ROOT}
 
 # Lambda Runtime Interface Client — bridges Debian container with Lambda
