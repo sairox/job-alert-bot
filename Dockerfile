@@ -6,7 +6,7 @@
 # Push:   docker tag job-alert-bot:latest <account>.dkr.ecr.<region>.amazonaws.com/job-alert-bot:latest
 #         docker push <account>.dkr.ecr.<region>.amazonaws.com/job-alert-bot:latest
 
-FROM --platform=linux/amd64 public.ecr.aws/lambda/python:3.11
+FROM --platform=linux/amd64 public.ecr.aws/lambda/python:3.12
 
 # Install Python dependencies
 COPY requirements.txt .
