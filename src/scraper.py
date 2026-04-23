@@ -126,9 +126,19 @@ class AdyenScraper:
                     page.wait_for_timeout(2000)
 
                 if captured:
-                    logger.info(f"Total jobs from API interception: {len(captured)}")
+                    # Deduplicate by ID — the page sometimes fires the same
+                    # Greenhouse API request twice (pagination + featured section).
+                    seen: set = set()
+                    unique = []
+                    for job in captured:
+                        if job.id not in seen:
+                            seen.add(job.id)
+                            unique.append(job)
+                    logger.info(
+                        f"API interception: {len(captured)} raw → {len(unique)} unique jobs"
+                    )
                     browser.close()
-                    return captured
+                    return unique
 
                 # Fallback: parse the fully-rendered HTML
                 html = page.content()
