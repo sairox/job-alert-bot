@@ -1,0 +1,9 @@
+# Copy this file to terraform.tfvars and fill in real values.
+# terraform.tfvars is gitignored so secrets stay local.
+
+aws_region     = "us-east-1"
+ecr_image_uri  = "123456789012.dkr.ecr.us-east-1.amazonaws.com/job-alert-bot:latest"
+sender_email   = "alerts@yourdomain.com"   # Must be verified in SES
+recipient_email = "saiviks81@gmail.com"
+s3_bucket_name = "job-alert-bot-state"
+keywords       = "Software,Engineer"
